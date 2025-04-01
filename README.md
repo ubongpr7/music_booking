@@ -39,8 +39,8 @@ cd music_booking
 ### Set Up Environment Variables
 Create a `.env` file and define the necessary environment variables:
 ```
-EMAIL_HOST_USER=ubongpr7@gmail.com
-EMAIL_HOST_PASSWORD=nmcmiwlgwdrwesef
+EMAIL_HOST_USER=
+EMAIL_HOST_PASSWORD=
 SECRET_KEY=django-insecure-pvc)e7cia$y25l0lc^b@#j+5c628x8+b(^eirvpgk3$z6^t8wh
 DEBUG=True
 DB_NAME=postgress
