@@ -19,6 +19,7 @@ class ArtistViewSet(viewsets.ModelViewSet):
     """
     queryset = Artist.objects.all()
     serializer_class = ArtistSerializer
+    permission_classes = [permissions.IsAuthenticated,]
 
 class ArtistGenre(generics.RetrieveUpdateAPIView):
     queryset = Artist.objects.all() 

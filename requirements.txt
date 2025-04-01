@@ -44,3 +44,4 @@ django-redis
 social-auth-app-django
 pydot 
 graphviz
+stripe

@@ -1,6 +1,7 @@
 
 import os
 from pathlib import Path
+import sys
 from dotenv import load_dotenv
 from datetime import timedelta
 
@@ -42,6 +43,8 @@ CORE_APPS = [
     'mainapps.accounts',
     'mainapps.artist',
     'mainapps.booking',
+    'mainapps.payment',
+
 ]
 INSTALLED_APPS = DJ_DEFAULT_INSTALLED_APPS + THIRD_PARTY_APPS + CORE_APPS
 
@@ -87,6 +90,7 @@ DATABASES = {
 }
 
 """
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -97,7 +101,11 @@ DATABASES = {
         'PORT': os.getenv('DB_PORT'),
     }
 }
-
+if 'test' in sys.argv:
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': ':memory:', 
+    }
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -141,6 +149,7 @@ EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
     
+DOMAIN_NAME = os.getenv('DOMAIN_NAME')
 
 
 
@@ -159,7 +168,7 @@ AUTHENTICATION_BACKENDS = [
 DJOSER = {
     'PASSWORD_RESET_CONFIRM_URL': 'accounts/password_reset/{uid}/{token}',
     'USERNAME_RESET_CONFIRM_URL': 'username/reset/confirm/{uid}/{token}',
-    'ACTIVATION_URL': 'activate/{uid}/{token}',
+    'ACTIVATION_URL': 'auth-api/users/activation/{uid}/{token}/',
     'SEND_ACTIVATION_EMAIL': True,
     'USER_CREATE_PASSWORD_RETYPE': True,
     'PASSWORD_RESET_CONFIRM_RETYPE': True,
@@ -179,7 +188,7 @@ AUTH_COOKIE_PATH='/'
 AUTH_COOKIE_SAMESITE='None'
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=10),
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=1),
     'REFRESH_TOKEN_LIFETIME': timedelta(hours=48),
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,

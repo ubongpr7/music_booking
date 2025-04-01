@@ -10,6 +10,7 @@ router.register(r'bookings', views.BookingViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
-
+    path('booking-groups/', views.BookingGroupListCreateView.as_view(), name='booking-group-list-create'),
+    path('booking-group/<int:id>/', views.BookingGroupDetailView.as_view(), name='booking-group-detail'),
 ]
 

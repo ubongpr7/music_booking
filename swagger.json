@@ -1,0 +1,1548 @@
+swagger: '2.0'
+info:
+  title: Music Booking API
+  description: The Music Booking API allows users to manage artist profiles, browse
+    events, book tickets, and handle secure payments via Stripe. This API supports
+    JWT authentication and includes endpoints for user registration, booking management,
+    and payment processing.
+  contact:
+    email: ubongpr7@gmail.com
+  license:
+    name: MIT License
+  version: v1
+host: localhost:7745
+schemes:
+- http
+basePath: /
+consumes:
+- application/json
+produces:
+- application/json
+securityDefinitions:
+  Basic:
+    type: basic
+security:
+- Basic: []
+paths:
+  /artist_api/v1/artists/:
+    get:
+      operationId: artist_api_v1_artists_list
+      description: API endpoint that allows artists to be viewed or edited.
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Artist'
+      tags:
+      - artist_api
+    post:
+      operationId: artist_api_v1_artists_create
+      description: API endpoint that allows artists to be viewed or edited.
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Artist'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/Artist'
+      tags:
+      - artist_api
+    parameters: []
+  /artist_api/v1/artists/{id}/:
+    get:
+      operationId: artist_api_v1_artists_read
+      description: API endpoint that allows artists to be viewed or edited.
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Artist'
+      tags:
+      - artist_api
+    put:
+      operationId: artist_api_v1_artists_update
+      description: API endpoint that allows artists to be viewed or edited.
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Artist'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Artist'
+      tags:
+      - artist_api
+    patch:
+      operationId: artist_api_v1_artists_partial_update
+      description: API endpoint that allows artists to be viewed or edited.
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Artist'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Artist'
+      tags:
+      - artist_api
+    delete:
+      operationId: artist_api_v1_artists_delete
+      description: API endpoint that allows artists to be viewed or edited.
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      tags:
+      - artist_api
+    parameters:
+    - name: id
+      in: path
+      description: A unique integer value identifying this artist.
+      required: true
+      type: integer
+  /artist_api/v1/genres/{id}/:
+    get:
+      operationId: artist_api_v1_genres_read
+      description: Get all genre with artist status
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/GenreDetail'
+      tags:
+      - artist_api
+    put:
+      operationId: artist_api_v1_genres_update
+      description: Update artist genres with complete list
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/GenreDetail'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/GenreDetail'
+      tags:
+      - artist_api
+    patch:
+      operationId: artist_api_v1_genres_partial_update
+      description: ''
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/GenreDetail'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/GenreDetail'
+      tags:
+      - artist_api
+    parameters:
+    - name: id
+      in: path
+      description: A unique integer value identifying this artist.
+      required: true
+      type: integer
+  /auth-api/users/:
+    get:
+      operationId: auth-api_users_list
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/User'
+      tags:
+      - auth-api
+    post:
+      operationId: auth-api_users_create
+      description: ''
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/UserCreatePasswordRetype'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/UserCreatePasswordRetype'
+      tags:
+      - auth-api
+    parameters: []
+  /auth-api/users/activation/:
+    post:
+      operationId: auth-api_users_activation
+      description: ''
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Activation'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/Activation'
+      tags:
+      - auth-api
+    parameters: []
+  /auth-api/users/me/:
+    get:
+      operationId: auth-api_users_me_read
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/User'
+      tags:
+      - auth-api
+    put:
+      operationId: auth-api_users_me_update
+      description: ''
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/User'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/User'
+      tags:
+      - auth-api
+    patch:
+      operationId: auth-api_users_me_partial_update
+      description: ''
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/User'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/User'
+      tags:
+      - auth-api
+    delete:
+      operationId: auth-api_users_me_delete
+      description: ''
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      tags:
+      - auth-api
+    parameters: []
+  /auth-api/users/resend_activation/:
+    post:
+      operationId: auth-api_users_resend_activation
+      description: ''
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/SendEmailReset'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/SendEmailReset'
+      tags:
+      - auth-api
+    parameters: []
+  /auth-api/users/reset_email/:
+    post:
+      operationId: auth-api_users_reset_username
+      description: ''
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/SendEmailReset'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/SendEmailReset'
+      tags:
+      - auth-api
+    parameters: []
+  /auth-api/users/reset_email_confirm/:
+    post:
+      operationId: auth-api_users_reset_username_confirm
+      description: ''
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/UsernameResetConfirm'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/UsernameResetConfirm'
+      tags:
+      - auth-api
+    parameters: []
+  /auth-api/users/reset_password/:
+    post:
+      operationId: auth-api_users_reset_password
+      description: ''
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/SendEmailReset'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/SendEmailReset'
+      tags:
+      - auth-api
+    parameters: []
+  /auth-api/users/reset_password_confirm/:
+    post:
+      operationId: auth-api_users_reset_password_confirm
+      description: ''
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/PasswordResetConfirmRetype'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/PasswordResetConfirmRetype'
+      tags:
+      - auth-api
+    parameters: []
+  /auth-api/users/set_email/:
+    post:
+      operationId: auth-api_users_set_username
+      description: ''
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/SetUsername'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/SetUsername'
+      tags:
+      - auth-api
+    parameters: []
+  /auth-api/users/set_password/:
+    post:
+      operationId: auth-api_users_set_password
+      description: ''
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/SetPassword'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/SetPassword'
+      tags:
+      - auth-api
+    parameters: []
+  /auth-api/users/{id}/:
+    get:
+      operationId: auth-api_users_read
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/User'
+      tags:
+      - auth-api
+    put:
+      operationId: auth-api_users_update
+      description: ''
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/User'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/User'
+      tags:
+      - auth-api
+    patch:
+      operationId: auth-api_users_partial_update
+      description: ''
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/User'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/User'
+      tags:
+      - auth-api
+    delete:
+      operationId: auth-api_users_delete
+      description: ''
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      tags:
+      - auth-api
+    parameters:
+    - name: id
+      in: path
+      description: A unique integer value identifying this user.
+      required: true
+      type: integer
+  /booking_api/v1/booking-group/{id}/:
+    get:
+      operationId: booking_api_v1_booking-group_read
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/BookingGroup'
+      tags:
+      - booking_api
+    parameters:
+    - name: id
+      in: path
+      description: A unique integer value identifying this booking group.
+      required: true
+      type: integer
+  /booking_api/v1/booking-groups/:
+    get:
+      operationId: booking_api_v1_booking-groups_list
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/BookingGroup'
+      tags:
+      - booking_api
+    post:
+      operationId: booking_api_v1_booking-groups_create
+      description: ''
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/BookingGroup'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/BookingGroup'
+      tags:
+      - booking_api
+    parameters: []
+  /booking_api/v1/bookings/:
+    get:
+      operationId: booking_api_v1_bookings_list
+      description: CRUD API for Bookings.
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Booking'
+      tags:
+      - booking_api
+    post:
+      operationId: booking_api_v1_bookings_create
+      description: CRUD API for Bookings.
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Booking'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/Booking'
+      tags:
+      - booking_api
+    parameters: []
+  /booking_api/v1/bookings/{id}/:
+    get:
+      operationId: booking_api_v1_bookings_read
+      description: CRUD API for Bookings.
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Booking'
+      tags:
+      - booking_api
+    put:
+      operationId: booking_api_v1_bookings_update
+      description: CRUD API for Bookings.
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Booking'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Booking'
+      tags:
+      - booking_api
+    patch:
+      operationId: booking_api_v1_bookings_partial_update
+      description: CRUD API for Bookings.
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Booking'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Booking'
+      tags:
+      - booking_api
+    delete:
+      operationId: booking_api_v1_bookings_delete
+      description: CRUD API for Bookings.
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      tags:
+      - booking_api
+    parameters:
+    - name: id
+      in: path
+      description: A unique integer value identifying this booking.
+      required: true
+      type: integer
+  /booking_api/v1/event-sections/:
+    get:
+      operationId: booking_api_v1_event-sections_list
+      description: CRUD API for Event Sections.
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/EventSection'
+      tags:
+      - booking_api
+    post:
+      operationId: booking_api_v1_event-sections_create
+      description: CRUD API for Event Sections.
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/EventSection'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/EventSection'
+      tags:
+      - booking_api
+    parameters: []
+  /booking_api/v1/event-sections/{id}/:
+    get:
+      operationId: booking_api_v1_event-sections_read
+      description: CRUD API for Event Sections.
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/EventSection'
+      tags:
+      - booking_api
+    put:
+      operationId: booking_api_v1_event-sections_update
+      description: CRUD API for Event Sections.
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/EventSection'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/EventSection'
+      tags:
+      - booking_api
+    patch:
+      operationId: booking_api_v1_event-sections_partial_update
+      description: CRUD API for Event Sections.
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/EventSection'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/EventSection'
+      tags:
+      - booking_api
+    delete:
+      operationId: booking_api_v1_event-sections_delete
+      description: CRUD API for Event Sections.
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      tags:
+      - booking_api
+    parameters:
+    - name: id
+      in: path
+      description: A unique integer value identifying this event section.
+      required: true
+      type: integer
+  /booking_api/v1/events/:
+    get:
+      operationId: booking_api_v1_events_list
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Event'
+      tags:
+      - booking_api
+    post:
+      operationId: booking_api_v1_events_create
+      description: ''
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Event'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/Event'
+      tags:
+      - booking_api
+    parameters: []
+  /booking_api/v1/events/{id}/:
+    get:
+      operationId: booking_api_v1_events_read
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Event'
+      tags:
+      - booking_api
+    put:
+      operationId: booking_api_v1_events_update
+      description: ''
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Event'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Event'
+      tags:
+      - booking_api
+    patch:
+      operationId: booking_api_v1_events_partial_update
+      description: ''
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Event'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Event'
+      tags:
+      - booking_api
+    delete:
+      operationId: booking_api_v1_events_delete
+      description: ''
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      tags:
+      - booking_api
+    parameters:
+    - name: id
+      in: path
+      description: A unique integer value identifying this event.
+      required: true
+      type: integer
+  /booking_api/v1/venue-sections/:
+    get:
+      operationId: booking_api_v1_venue-sections_list
+      description: API endpoint for managing venue sections.
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/VenueSection'
+      tags:
+      - booking_api
+    post:
+      operationId: booking_api_v1_venue-sections_create
+      description: API endpoint for managing venue sections.
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/VenueSection'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/VenueSection'
+      tags:
+      - booking_api
+    parameters: []
+  /booking_api/v1/venue-sections/{id}/:
+    get:
+      operationId: booking_api_v1_venue-sections_read
+      description: API endpoint for managing venue sections.
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/VenueSection'
+      tags:
+      - booking_api
+    put:
+      operationId: booking_api_v1_venue-sections_update
+      description: API endpoint for managing venue sections.
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/VenueSection'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/VenueSection'
+      tags:
+      - booking_api
+    patch:
+      operationId: booking_api_v1_venue-sections_partial_update
+      description: API endpoint for managing venue sections.
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/VenueSection'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/VenueSection'
+      tags:
+      - booking_api
+    delete:
+      operationId: booking_api_v1_venue-sections_delete
+      description: API endpoint for managing venue sections.
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      tags:
+      - booking_api
+    parameters:
+    - name: id
+      in: path
+      description: A unique integer value identifying this venue section.
+      required: true
+      type: integer
+  /booking_api/v1/venues/:
+    get:
+      operationId: booking_api_v1_venues_list
+      description: CRUD endpoint for Venue
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Venue'
+      tags:
+      - booking_api
+    post:
+      operationId: booking_api_v1_venues_create
+      description: CRUD endpoint for Venue
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Venue'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/Venue'
+      tags:
+      - booking_api
+    parameters: []
+  /booking_api/v1/venues/{id}/:
+    get:
+      operationId: booking_api_v1_venues_read
+      description: CRUD endpoint for Venue
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Venue'
+      tags:
+      - booking_api
+    put:
+      operationId: booking_api_v1_venues_update
+      description: CRUD endpoint for Venue
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Venue'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Venue'
+      tags:
+      - booking_api
+    patch:
+      operationId: booking_api_v1_venues_partial_update
+      description: CRUD endpoint for Venue
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Venue'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Venue'
+      tags:
+      - booking_api
+    delete:
+      operationId: booking_api_v1_venues_delete
+      description: CRUD endpoint for Venue
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      tags:
+      - booking_api
+    parameters:
+    - name: id
+      in: path
+      description: A unique integer value identifying this venue.
+      required: true
+      type: integer
+  /jwt/create/:
+    post:
+      operationId: jwt_create_create
+      description: |-
+        Takes a set of user credentials and returns an access and refresh JSON web
+        token pair to prove the authentication of those credentials.
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/MyTokenObtainPair'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/MyTokenObtainPair'
+      tags:
+      - jwt
+    parameters: []
+  /jwt/refresh/:
+    post:
+      operationId: jwt_refresh_create
+      description: |-
+        Takes a refresh type JSON web token and returns an access type JSON web
+        token if the refresh token is valid.
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/TokenRefresh'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/TokenRefresh'
+      tags:
+      - jwt
+    parameters: []
+  /jwt/verify/:
+    post:
+      operationId: jwt_verify_create
+      description: |-
+        Takes a token and indicates if it is valid.  This view provides no
+        information about a token's fitness for a particular use.
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/TokenVerify'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/TokenVerify'
+      tags:
+      - jwt
+    parameters: []
+  /payment_api/create_checkout_session/:
+    get:
+      operationId: payment_api_create_checkout_session_list
+      description: |-
+        API view to create a Stripe checkout session for purchasing tickets
+        based on an existing booking group's reference.
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+      - payment_api
+    parameters: []
+definitions:
+  Artist:
+    required:
+    - name
+    - contact_email
+    type: object
+    properties:
+      id:
+        title: ID
+        type: integer
+        readOnly: true
+      name:
+        title: Name
+        type: string
+        maxLength: 100
+        minLength: 1
+      bio:
+        title: Bio
+        type: string
+      website:
+        title: Website
+        type: string
+        format: uri
+        maxLength: 200
+      contact_email:
+        title: Contact email
+        type: string
+        format: email
+        maxLength: 254
+        minLength: 1
+      contact_phone:
+        title: Contact phone
+        type: string
+        maxLength: 15
+  GenreDetail:
+    type: object
+    properties:
+      has_permission:
+        title: Has permission
+        type: boolean
+        readOnly: true
+  User:
+    type: object
+    properties:
+      id:
+        title: ID
+        type: integer
+        readOnly: true
+      email:
+        title: Email
+        type: string
+        format: email
+        readOnly: true
+        minLength: 1
+        x-nullable: true
+  UserCreatePasswordRetype:
+    required:
+    - password
+    - re_password
+    type: object
+    properties:
+      email:
+        title: Email
+        type: string
+        format: email
+        maxLength: 254
+        minLength: 1
+        x-nullable: true
+      id:
+        title: ID
+        type: integer
+        readOnly: true
+      password:
+        title: Password
+        type: string
+        minLength: 1
+      re_password:
+        title: Re password
+        type: string
+        minLength: 1
+  Activation:
+    required:
+    - uid
+    - token
+    type: object
+    properties:
+      uid:
+        title: Uid
+        type: string
+        minLength: 1
+      token:
+        title: Token
+        type: string
+        minLength: 1
+  SendEmailReset:
+    required:
+    - email
+    type: object
+    properties:
+      email:
+        title: Email
+        type: string
+        format: email
+        minLength: 1
+  UsernameResetConfirm:
+    type: object
+    properties:
+      new_email:
+        title: Email
+        type: string
+        format: email
+        maxLength: 254
+        minLength: 1
+        x-nullable: true
+  PasswordResetConfirmRetype:
+    required:
+    - uid
+    - token
+    - new_password
+    - re_new_password
+    type: object
+    properties:
+      uid:
+        title: Uid
+        type: string
+        minLength: 1
+      token:
+        title: Token
+        type: string
+        minLength: 1
+      new_password:
+        title: New password
+        type: string
+        minLength: 1
+      re_new_password:
+        title: Re new password
+        type: string
+        minLength: 1
+  SetUsername:
+    required:
+    - current_password
+    type: object
+    properties:
+      current_password:
+        title: Current password
+        type: string
+        minLength: 1
+      new_email:
+        title: Email
+        type: string
+        format: email
+        maxLength: 254
+        minLength: 1
+        x-nullable: true
+  SetPassword:
+    required:
+    - new_password
+    - current_password
+    type: object
+    properties:
+      new_password:
+        title: New password
+        type: string
+        minLength: 1
+      current_password:
+        title: Current password
+        type: string
+        minLength: 1
+  Booking:
+    required:
+    - number_of_tickets
+    - user
+    - event_section
+    type: object
+    properties:
+      id:
+        title: ID
+        type: integer
+        readOnly: true
+      created_at:
+        title: Created at
+        type: string
+        format: date-time
+        readOnly: true
+      updated_at:
+        title: Updated at
+        type: string
+        format: date-time
+        readOnly: true
+      reference:
+        title: Reference
+        type: string
+        maxLength: 20
+        x-nullable: true
+      number_of_tickets:
+        title: Number of tickets
+        type: integer
+        maximum: 2147483647
+        minimum: 0
+      booking_date:
+        title: Booking date
+        type: string
+        format: date-time
+        readOnly: true
+      total_price:
+        title: Total price
+        type: string
+        format: decimal
+      status:
+        title: Status
+        type: string
+        enum:
+        - pending
+        - confirmed
+        - canceled
+        - completed
+      created_by:
+        title: Created by
+        type: integer
+        x-nullable: true
+      booking_group:
+        title: Booking group
+        type: integer
+        x-nullable: true
+      user:
+        title: User
+        type: integer
+      event_section:
+        title: Event section
+        type: integer
+  BookingGroup:
+    required:
+    - user
+    type: object
+    properties:
+      id:
+        title: ID
+        type: integer
+        readOnly: true
+      user:
+        title: User
+        type: integer
+      total_price:
+        title: Total price
+        type: string
+        format: decimal
+      status:
+        title: Status
+        type: string
+        enum:
+        - pending
+        - confirmed
+        - paid
+        - canceled
+        - completed
+      bookings:
+        type: array
+        items:
+          $ref: '#/definitions/Booking'
+        readOnly: true
+  EventSection:
+    required:
+    - tickets_available
+    - ticket_price
+    - event
+    - venue_section
+    type: object
+    properties:
+      id:
+        title: ID
+        type: integer
+        readOnly: true
+      created_at:
+        title: Created at
+        type: string
+        format: date-time
+        readOnly: true
+      updated_at:
+        title: Updated at
+        type: string
+        format: date-time
+        readOnly: true
+      tickets_available:
+        title: Tickets available
+        description: Tickets available for this section
+        type: integer
+        maximum: 2147483647
+        minimum: 0
+      ticket_price:
+        title: Ticket price
+        description: Ticket price for this section
+        type: string
+        format: decimal
+      created_by:
+        title: Created by
+        type: integer
+        x-nullable: true
+      event:
+        title: Event
+        type: integer
+      venue_section:
+        title: Venue section
+        type: integer
+  Event:
+    required:
+    - event_date
+    - ticket_price
+    - tickets_available
+    - venue
+    - artist
+    type: object
+    properties:
+      id:
+        title: ID
+        type: integer
+        readOnly: true
+      created_at:
+        title: Created at
+        type: string
+        format: date-time
+        readOnly: true
+      updated_at:
+        title: Updated at
+        type: string
+        format: date-time
+        readOnly: true
+      event_date:
+        title: Event date
+        type: string
+        format: date-time
+      ticket_price:
+        title: Ticket price
+        description: Default ticket price
+        type: string
+        format: decimal
+      tickets_available:
+        title: Tickets available
+        description: Total tickets available across all sections
+        type: integer
+        maximum: 2147483647
+        minimum: 0
+      status:
+        title: Status
+        type: string
+        enum:
+        - upcoming
+        - completed
+        - canceled
+      description:
+        title: Description
+        type: string
+      booking_policy:
+        title: Booking policy
+        description: Describe refund/cancellation policies
+        type: string
+      is_refundable:
+        title: Is refundable
+        description: Are tickets refundable?
+        type: boolean
+      refund_deadline:
+        title: Refund deadline
+        description: Deadline for requesting a refund
+        type: string
+        format: date-time
+        x-nullable: true
+      created_by:
+        title: Created by
+        type: integer
+        x-nullable: true
+      venue:
+        title: Venue
+        type: integer
+      artist:
+        title: Artist
+        type: integer
+  VenueSection:
+    required:
+    - name
+    - capacity
+    - venue
+    type: object
+    properties:
+      id:
+        title: ID
+        type: integer
+        readOnly: true
+      created_at:
+        title: Created at
+        type: string
+        format: date-time
+        readOnly: true
+      updated_at:
+        title: Updated at
+        type: string
+        format: date-time
+        readOnly: true
+      name:
+        title: Name
+        type: string
+        maxLength: 50
+        minLength: 1
+      capacity:
+        title: Capacity
+        description: Total number of seats in this section.
+        type: integer
+        maximum: 2147483647
+        minimum: 0
+      created_by:
+        title: Created by
+        type: integer
+        x-nullable: true
+      venue:
+        title: Venue
+        type: integer
+  Venue:
+    required:
+    - name
+    - street_address
+    - city
+    - state
+    - postal_code
+    - capacity
+    - contact_email
+    type: object
+    properties:
+      id:
+        title: ID
+        type: integer
+        readOnly: true
+      created_at:
+        title: Created at
+        type: string
+        format: date-time
+        readOnly: true
+      updated_at:
+        title: Updated at
+        type: string
+        format: date-time
+        readOnly: true
+      name:
+        title: Name
+        type: string
+        maxLength: 100
+        minLength: 1
+      street_address:
+        title: Street address
+        type: string
+        maxLength: 255
+        minLength: 1
+      city:
+        title: City
+        type: string
+        maxLength: 100
+        minLength: 1
+      state:
+        title: State
+        type: string
+        maxLength: 100
+        minLength: 1
+      postal_code:
+        title: Postal code
+        type: string
+        maxLength: 20
+        minLength: 1
+      capacity:
+        title: Capacity
+        type: integer
+        maximum: 2147483647
+        minimum: 0
+      contact_email:
+        title: Contact email
+        type: string
+        format: email
+        maxLength: 254
+        minLength: 1
+      contact_phone:
+        title: Contact phone
+        type: string
+        maxLength: 15
+      created_by:
+        title: Created by
+        type: integer
+        x-nullable: true
+  MyTokenObtainPair:
+    required:
+    - email
+    - password
+    type: object
+    properties:
+      email:
+        title: Email
+        type: string
+        minLength: 1
+      password:
+        title: Password
+        type: string
+        minLength: 1
+  TokenRefresh:
+    required:
+    - refresh
+    type: object
+    properties:
+      refresh:
+        title: Refresh
+        type: string
+        minLength: 1
+      access:
+        title: Access
+        type: string
+        readOnly: true
+        minLength: 1
+  TokenVerify:
+    required:
+    - token
+    type: object
+    properties:
+      token:
+        title: Token
+        type: string
+        minLength: 1

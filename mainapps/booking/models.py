@@ -159,20 +159,60 @@ class EventSection(Tracking):
     def __str__(self):
         return f"{self.venue_section.name} for {self.event}"
 
+class BookingGroup(Tracking):
+    """
+    A parent model that groups multiple bookings together under a single transaction.
+
+    Attributes:
+        user: The user making the booking.
+        reference: Unique booking reference for tracking.
+        total_price: Sum of all bookings within this group.
+        status: Overall booking status (Pending, Confirmed,Paid, Canceled, Completed).
+    """
+
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('confirmed', 'Confirmed'),
+        ('paid', 'Paid'),
+        ('canceled', 'Canceled'),
+        ('completed', 'Completed'),
+    ]
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="booking_groups")
+    reference = models.CharField(max_length=20, unique=True, blank=True, null=True)
+    total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
+
+    def generate_reference(self):
+        """Generates a unique reference for the entire booking group."""
+        date_str = now().strftime('%Y%m%d')
+        unique_code = uuid.uuid4().hex[:6].upper()
+        return f"GRP-{date_str}-{unique_code}"
+
+    def save(self, *args, **kwargs):
+        """Auto-generate reference and calculate total price."""
+        if not self.reference:
+            self.reference = self.generate_reference()
+        
+        # Recalculate total price
+        self.total_price = sum(booking.total_price for booking in self.bookings.all())
+
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"BookingGroup {self.reference} - {self.user.username} ({self.get_status_display()})"
+
 
 class Booking(Tracking):
     """
-    Model representing a booking made by a user for a specific event section.
+    A booking model representing a user's purchase of tickets for a specific event section.
 
     Attributes:
-        user: The user who made the booking.
-        event_section: The specific event section where the booking is made.
-        reference: Auto-generated booking reference for tracking.
-        number_of_tickets: The number of tickets booked.
-        booking_date: The date and time when the booking was created.
-        total_price: Total price calculated based on the number of tickets and section ticket price.
-        total_booked_tickets: Keeps track of the total number of booked tickets for the event section.
-        status: Current status of the booking (Pending, Confirmed, Canceled, Completed).
+        booking_group: The parent group if booking multiple sections.
+        user: The user making the booking.
+        event_section: The section being booked.
+        number_of_tickets: Number of tickets purchased.
+        total_price: Price for this particular booking.
     """
 
     STATUS_CHOICES = [
@@ -182,52 +222,41 @@ class Booking(Tracking):
         ('completed', 'Completed'),
     ]
 
-    reference = models.CharField(max_length=20, unique=True, blank=True, null=True)
+    booking_group = models.ForeignKey(BookingGroup, on_delete=models.CASCADE, related_name="bookings", null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     event_section = models.ForeignKey(EventSection, on_delete=models.CASCADE, related_name='bookings')
+    reference = models.CharField(max_length=20, unique=True, blank=True, null=True)
     number_of_tickets = models.PositiveIntegerField()
     booking_date = models.DateTimeField(auto_now_add=True)
     total_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, default=0)
-    total_booked_tickets = models.PositiveIntegerField(default=0)  # Tracks total booked tickets
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
 
     def generate_reference(self):
-        """Generates a unique booking reference in the format BKG-YYYYMMDD-RANDOM."""
-        date_str = now().strftime('%Y%m%d')  # Format: YYYYMMDD
-        unique_code = uuid.uuid4().hex[:6].upper()  # Generate a 6-char random code
+        """Generates a unique reference for individual bookings."""
+        date_str = now().strftime('%Y%m%d')
+        unique_code = uuid.uuid4().hex[:6].upper()
         return f"BKG-{date_str}-{unique_code}"
 
     def save(self, *args, **kwargs):
-        """
-        Handles auto-generation of the reference number, ticket validation,
-        and total price calculation. Ensures total booked tickets are updated accordingly.
-        """
-
-        if not self.reference:  # Only generate a reference if it's not already set
+        """Calculate total price and update booking group price."""
+        if not self.reference:
             self.reference = self.generate_reference()
+            
 
-        # Calculate total price
         self.total_price = self.number_of_tickets * self.event_section.ticket_price
 
-        if self.status == 'confirmed':
-            if self.number_of_tickets > self.event_section.tickets_available:
-                raise ValidationError("Not enough tickets available for this event section.")
-
-            # Deduct available tickets
-            self.event_section.tickets_available -= self.number_of_tickets
-            self.event_section.save()
-
-            # Update total booked tickets for this event section
-            self.total_booked_tickets += self.number_of_tickets
-
-        elif self.status == 'canceled':  # If canceled, restore ticket count
-            self.event_section.tickets_available += self.number_of_tickets
-            self.event_section.save()
-
-            # Reduce booked ticket count
-            self.total_booked_tickets -= self.number_of_tickets
-
         super().save(*args, **kwargs)
+
+        # Update the booking group's total price
+        if self.booking_group:
+            self.booking_group.save()
+        else:
+            self.booking_group = BookingGroup.objects.create(
+                user=self.user, 
+                status='pending'
+                )
+
+        
 
     def __str__(self):
         return f"{self.user.username} - {self.reference} - {self.event_section.name} - {self.get_status_display()}"

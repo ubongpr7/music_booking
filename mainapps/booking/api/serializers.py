@@ -1,6 +1,6 @@
 from datetime import timezone
 from rest_framework import serializers
-from ..models import Booking, EventSection, Venue, VenueSection,Event
+from ..models import Booking, BookingGroup, EventSection, Venue, VenueSection,Event
 
 
 class VenueSerializer(serializers.ModelSerializer):
@@ -61,4 +61,11 @@ class BookingSerializer(serializers.ModelSerializer):
         model = Booking
         fields = '__all__'
         read_only_fields = ('id',)
-        
+
+class BookingGroupSerializer(serializers.ModelSerializer):
+    bookings = BookingSerializer(many=True, read_only=True)  
+    
+    class Meta:
+        model = BookingGroup
+        fields = ['id', 'user', 'total_price', 'status', 'bookings']
+        # depth = 1 

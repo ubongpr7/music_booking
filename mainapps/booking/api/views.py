@@ -1,6 +1,12 @@
-from rest_framework import viewsets, permissions
-from ..models import Booking, EventSection, Venue, VenueSection, Event
-from .serializers import BookingSerializer, EventSectionSerializer, EventSerializer, VenueSectionSerializer, VenueSerializer
+from rest_framework import viewsets, permissions,generics
+from ..models import Booking, BookingGroup, EventSection, Venue, VenueSection, Event
+from .serializers import (
+    BookingGroupSerializer, 
+    BookingSerializer, 
+    EventSectionSerializer, 
+    EventSerializer, 
+    VenueSectionSerializer, 
+    VenueSerializer)
 
 class VenueViewSet(viewsets.ModelViewSet):
     """CRUD endpoint for Venue"""
@@ -47,3 +53,16 @@ class BookingViewSet(viewsets.ModelViewSet):
     queryset = Booking.objects.all()
     serializer_class = BookingSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+class BookingGroupListCreateView(generics.ListCreateAPIView):
+    queryset = BookingGroup.objects.all()
+    serializer_class = BookingGroupSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
+class BookingGroupDetailView(generics.RetrieveAPIView):
+    queryset = BookingGroup.objects.all()
+    serializer_class = BookingGroupSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    lookup_field = 'id'
+

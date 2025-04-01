@@ -12,16 +12,21 @@ from rest_framework_simplejwt.views import (
 
 
 schema_view = get_schema_view(
-   openapi.Info(
-      title="Music Booking API",
-      default_version='v1',
-      description="Test description",
-      terms_of_service="https://www.google.com/policies/terms/",
-      contact=openapi.Contact(email="contact@snippets.local"),
-      license=openapi.License(name="BSD License"),
-   ),
-   public=True,
-   permission_classes=(permissions.AllowAny,),
+    openapi.Info(
+        title="Music Booking API",
+        default_version="v1",
+        description=(
+            "The Music Booking API allows users to manage artist profiles, "
+            "browse events, book tickets, and handle secure payments via Stripe. "
+            "This API supports JWT authentication and includes endpoints for user "
+            "registration, booking management, and payment processing."
+        ),
+        # terms_of_service="https://www.musicbooking.com/terms/",
+        contact=openapi.Contact(email="ubongpr7@gmail.com"),
+        license=openapi.License(name="MIT License"),
+    ),
+    public=True,
+    permission_classes=(permissions.AllowAny,),
 )
 
 urlpatterns = [
@@ -29,7 +34,6 @@ urlpatterns = [
     # djoser urls
     path('auth-api/', include('djoser.urls')),
     path('', include('djoser.urls.jwt')),
-    path('social_auth/', include('djoser.social.urls')),
     #  api endpoints docs
     path('swagger<format>/', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
@@ -37,7 +41,7 @@ urlpatterns = [
     path('swagger.json', schema_view.without_ui(cache_timeout=0), name='schema-json'),
 
     # core apps
-    path('api/v1/accounts/', include("mainapps.accounts.api.urls")),
+    path('payment_api/', include("mainapps.payment.api.urls")),
     path('artist_api/v1/', include("mainapps.artist.api.urls")),
     path('booking_api/v1/', include("mainapps.booking.api.urls")),
 ]
