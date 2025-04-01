@@ -8,14 +8,28 @@ from .serializers import (
     VenueSectionSerializer, 
     VenueSerializer)
 
-class VenueViewSet(viewsets.ModelViewSet):
+class BaseOwnerViewSet(viewsets.ModelViewSet):
+    """Base ViewSet that ensures created_by is set and filters queryset by user"""
+    permission_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        """Set created_by to the authenticated user"""
+        serializer.save(created_by=self.request.user)
+
+    def get_queryset(self):
+        """Filter objects so users only see their own"""
+        if not self.request or not self.request.user or self.request.user.is_anonymous:
+            return self.queryset.none() 
+    
+        return self.queryset.filter(created_by=self.request.user)
+    
+class VenueViewSet(BaseOwnerViewSet):
     """CRUD endpoint for Venue"""
     queryset = Venue.objects.all()
     serializer_class = VenueSerializer
-    permission_classes = [permissions.IsAuthenticated]
 
 
-class VenueSectionViewSet(viewsets.ModelViewSet):
+class VenueSectionViewSet(BaseOwnerViewSet):
     """
     API endpoint for managing venue sections.
 
@@ -28,31 +42,27 @@ class VenueSectionViewSet(viewsets.ModelViewSet):
     """
     queryset = VenueSection.objects.all()
     serializer_class = VenueSectionSerializer
-    permission_classes = [permissions.IsAuthenticated]
 
-class EventViewSet(viewsets.ModelViewSet):
+class EventViewSet(BaseOwnerViewSet):
     
     queryset = Event.objects.all()
     serializer_class = EventSerializer
-    permission_classes = [permissions.IsAuthenticated]
 
 
-class EventSectionViewSet(viewsets.ModelViewSet):
+class EventSectionViewSet(BaseOwnerViewSet):
     """
     CRUD API for Event Sections.
     """
     queryset = EventSection.objects.all()
     serializer_class = EventSectionSerializer
-    permission_classes = [permissions.IsAuthenticated]
 
 
-class BookingViewSet(viewsets.ModelViewSet):
+class BookingViewSet(BaseOwnerViewSet):
     """
     CRUD API for Bookings.
     """
     queryset = Booking.objects.all()
     serializer_class = BookingSerializer
-    permission_classes = [permissions.IsAuthenticated]
 
 class BookingGroupListCreateView(generics.ListCreateAPIView):
     queryset = BookingGroup.objects.all()

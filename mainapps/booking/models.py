@@ -178,7 +178,6 @@ class BookingGroup(Tracking):
         ('completed', 'Completed'),
     ]
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="booking_groups")
     reference = models.CharField(max_length=20, unique=True, blank=True, null=True)
     total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
@@ -223,7 +222,6 @@ class Booking(Tracking):
     ]
 
     booking_group = models.ForeignKey(BookingGroup, on_delete=models.CASCADE, related_name="bookings", null=True, blank=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
     event_section = models.ForeignKey(EventSection, on_delete=models.CASCADE, related_name='bookings')
     reference = models.CharField(max_length=20, unique=True, blank=True, null=True)
     number_of_tickets = models.PositiveIntegerField()

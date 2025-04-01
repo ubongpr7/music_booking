@@ -1197,7 +1197,6 @@ definitions:
   Booking:
     required:
     - number_of_tickets
-    - user
     - event_section
     type: object
     properties:
@@ -1250,24 +1249,16 @@ definitions:
         title: Booking group
         type: integer
         x-nullable: true
-      user:
-        title: User
-        type: integer
       event_section:
         title: Event section
         type: integer
   BookingGroup:
-    required:
-    - user
     type: object
     properties:
       id:
         title: ID
         type: integer
         readOnly: true
-      user:
-        title: User
-        type: integer
       total_price:
         title: Total price
         type: string

@@ -67,5 +67,7 @@ class BookingGroupSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = BookingGroup
-        fields = ['id', 'user', 'total_price', 'status', 'bookings']
+        fields = ['id', 'total_price', 'status', 'bookings']
+        read_only_fields = ('id',)
+        
         # depth = 1 
