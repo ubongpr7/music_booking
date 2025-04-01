@@ -1,0 +1,29 @@
+services:
+  web:
+    build: .
+    env_file: .env
+    command: >
+      sh -c "python manage.py makemigrations &&
+             python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:7745"
+    volumes:
+      - .:/app
+    ports:
+      - "7745:7745"
+    depends_on:
+      - db
+    restart: unless-stopped
+    
+
+  db:
+    image: postgres
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
