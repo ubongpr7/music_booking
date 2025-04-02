@@ -78,7 +78,7 @@ The database schema has been generated using **Django Graph Models**. To visuali
 ```bash
 python manage.py graph_models -a -o schema.png
 ```
-A preview of the database relationships is available in the root directory as `schema.png`.
+A preview of the database relationships is available in the root directory as `database_schema.png`.
 
 
 ## 📮 Postman Collection
