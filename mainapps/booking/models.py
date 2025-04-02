@@ -164,7 +164,6 @@ class BookingGroup(Tracking):
     A parent model that groups multiple bookings together under a single transaction.
 
     Attributes:
-        user: The user making the booking.
         reference: Unique booking reference for tracking.
         total_price: Sum of all bookings within this group.
         status: Overall booking status (Pending, Confirmed,Paid, Canceled, Completed).
@@ -199,7 +198,7 @@ class BookingGroup(Tracking):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"BookingGroup {self.reference} - {self.user.username} ({self.get_status_display()})"
+        return f"BookingGroup {self.reference} - ({self.get_status_display()})"
 
 
 class Booking(Tracking):
@@ -208,7 +207,6 @@ class Booking(Tracking):
 
     Attributes:
         booking_group: The parent group if booking multiple sections.
-        user: The user making the booking.
         event_section: The section being booked.
         number_of_tickets: Number of tickets purchased.
         total_price: Price for this particular booking.
@@ -250,11 +248,10 @@ class Booking(Tracking):
             self.booking_group.save()
         else:
             self.booking_group = BookingGroup.objects.create(
-                user=self.user, 
                 status='pending'
                 )
 
         
 
     def __str__(self):
-        return f"{self.user.username} - {self.reference} - {self.event_section.name} - {self.get_status_display()}"
+        return f"{self.reference} - {self.event_section.name} - {self.get_status_display()}"
